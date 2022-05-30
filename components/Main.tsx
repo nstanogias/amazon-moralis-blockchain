@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react'
 
 import Cards from './Cards'
+import Header from './Header'
 
 const Main = () => {
   const styles = {
@@ -11,6 +12,7 @@ const Main = () => {
   }
   return (
     <div className={styles.container}>
+      <Header />
       <Cards />
     </div>
   )
