@@ -16,6 +16,7 @@ export const AmazonProvider = ({ children }) => {
   const [nickname, setNickname] = useState('')
   const [username, setUsername] = useState('')
   const [assets, setAssets] = useState<any[]>([])
+  const [recentTransactions, setRecentTransactions] = useState([])
 
   const {
     authenticate,
@@ -52,13 +53,10 @@ export const AmazonProvider = ({ children }) => {
         await enableWeb3()
       })()
     }
-    // ;(async () => {
-    //   await listenToUpdates()
-    // })()
-
     if (isAuthenticated) {
       ;(async () => {
         await getBalance()
+        await listenToUpdates()
         const currentUsername = await user?.get('nickname')
         setUsername(currentUsername)
         const account = await user?.get('ethAddress')
@@ -97,8 +95,6 @@ export const AmazonProvider = ({ children }) => {
     const price = ethers.BigNumber.from('100000000000000')
     const calcPrice = amount.mul(price)
 
-    console.log(amazonCoinAddress)
-
     let options = {
       contractAddress: amazonCoinAddress!,
       functionName: 'mint',
@@ -111,7 +107,6 @@ export const AmazonProvider = ({ children }) => {
     const transaction = await Moralis.executeFunction(options)
     const receipt = await transaction.wait()
     setIsLoading(false)
-    console.log(receipt)
     setEtherscanLink(
       `https://rinkeby.etherscan.io/tx/${receipt.transactionHash}`
     )
@@ -145,11 +140,41 @@ export const AmazonProvider = ({ children }) => {
 
       if (isWeb3Enabled) {
         const response = await Moralis.executeFunction(options)
-        console.log(response.toString())
         setBalance(response.toString())
       }
     } catch (error) {
       console.log(error)
+    }
+  }
+
+  const buyAsset = async (price, asset) => {
+    try {
+      if (!isAuthenticated) return
+      console.log(userData)
+
+      const options = {
+        type: 'erc20',
+        amount: price,
+        receiver: amazonCoinAddress,
+        contractAddress: amazonCoinAddress,
+      }
+
+      let transaction = await Moralis.transfer(options)
+      const receipt = await transaction.wait()
+
+      if (receipt) {
+        const res = userData[0].add('ownedAsset', {
+          ...asset,
+          purchaseDate: Date.now(),
+          etherscanLink: `https://rinkeby.etherscan.io/tx/${receipt.transactionHash}`,
+        })
+
+        await res.save().then(() => {
+          alert("You've successfully purchased this asset!")
+        })
+      }
+    } catch (error) {
+      console.log(error.message)
     }
   }
 
@@ -160,6 +185,16 @@ export const AmazonProvider = ({ children }) => {
     } catch (error) {
       console.log(error)
     }
+  }
+
+  const listenToUpdates = async () => {
+    let query = new Moralis.Query('EthTransactions')
+    let subscription = await query.subscribe()
+    subscription.on('update', async (object) => {
+      console.log('New Transactions')
+      console.log(object)
+      setRecentTransactions([object])
+    })
   }
 
   return (
@@ -178,6 +213,7 @@ export const AmazonProvider = ({ children }) => {
         setIsLoading,
         setEtherscanLink,
         etherscanLink,
+        buyAsset,
         currentAccount,
         nickname,
         setNickname,
@@ -185,6 +221,7 @@ export const AmazonProvider = ({ children }) => {
         setUsername,
         handleSetUsername,
         assets,
+        recentTransactions,
       }}
     >
       {children}
