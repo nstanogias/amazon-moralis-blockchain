@@ -17,6 +17,7 @@ export const AmazonProvider = ({ children }) => {
   const [username, setUsername] = useState('')
   const [assets, setAssets] = useState<any[]>([])
   const [recentTransactions, setRecentTransactions] = useState([])
+  const [ownedItems, setOwnedItems] = useState([])
 
   const {
     authenticate,
@@ -44,6 +45,7 @@ export const AmazonProvider = ({ children }) => {
       console.log(assetsData)
       await enableWeb3()
       await getAssets()
+      await getOwnedAssets()
     })()
   }, [userData, assetsData])
 
@@ -197,6 +199,19 @@ export const AmazonProvider = ({ children }) => {
     })
   }
 
+  const getOwnedAssets = async () => {
+    try {
+      if (userData[0]) {
+        setOwnedItems((prevItems) => [
+          ...prevItems,
+          userData[0].attributes.ownedAsset,
+        ])
+      }
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   return (
     <AmazonContext.Provider
       value={{
@@ -222,6 +237,7 @@ export const AmazonProvider = ({ children }) => {
         handleSetUsername,
         assets,
         recentTransactions,
+        ownedItems,
       }}
     >
       {children}
