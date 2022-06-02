@@ -71,17 +71,7 @@ export const AmazonProvider = ({ children }) => {
       setFormattedAccount('')
       setBalance('')
     }
-  }, [
-    isWeb3Enabled,
-    isAuthenticated,
-    balance,
-    setBalance,
-    authenticate,
-    currentAccount,
-    setUsername,
-    user,
-    username,
-  ])
+  }, [isWeb3Enabled, isAuthenticated, balance, currentAccount, user, username])
 
   const connectWallet = async () => {
     await enableWeb3()

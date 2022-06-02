@@ -1,4 +1,4 @@
-import React, { useContext, useEffect } from 'react'
+import React, { useContext } from 'react'
 import { AmazonContext } from '../context/AmazonContext'
 
 import Cards from './Cards'

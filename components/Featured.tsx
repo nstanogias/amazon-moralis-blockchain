@@ -15,28 +15,28 @@ const Featured = () => {
       <div className={styles.cards}>
         <div className={styles.card1}>
           <div className={styles.cardCross}>
-            <video autoPlay loop muted controls="" className="object-cover">
+            <video autoPlay loop muted className="object-cover">
               <source src="https://openseauserdata.com/files/3565db33a856b19f48396062e59e6d62.mp4#t=0.001" />
             </video>
           </div>
         </div>
         <div className={styles.card2}>
           <div className={styles.cardCross}>
-            <video autoPlay loop muted controls="" className="object-cover">
+            <video autoPlay loop muted className="object-cover">
               <source src="https://openseauserdata.com/files/89cba6f1544810aea19d78e664981d63.mp4#t=0.001" />
             </video>
           </div>
         </div>
         <div className={styles.card3}>
           <div className={styles.cardCross}>
-            <video autoPlay loop muted controls="" className="object-cover">
+            <video autoPlay loop muted className="object-cover">
               <source src="https://openseauserdata.com/files/894fd3d49c7c258d202a22bb710a3416.mp4#t=0.001" />
             </video>
           </div>
         </div>
         <div className={styles.card4}>
           <div className={styles.cardCross}>
-            <video autoPlay loop muted controls="" className="object-cover">
+            <video autoPlay loop muted className="object-cover">
               <source src="https://openseauserdata.com/files/022c0aad904ddbd8884b12468aaaad28.mp4#t=0.001" />
             </video>
           </div>
