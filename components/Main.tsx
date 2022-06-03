@@ -25,7 +25,6 @@ const Main = () => {
       )}
       {recentTransactions &&
         recentTransactions.map((transaction, index) => {
-          console.log(transaction)
           return (
             <div key={index} className={styles.recentTransactionsList}>
               <div className={styles.transactionCard}>

@@ -34,8 +34,8 @@ const BuyModal = ({ close, buyTokens }) => {
   }, [tokenAmount])
 
   const calculatePrice = () => {
-    const price = parseFloat(tokenAmount * 0.0001)
-    price = price.toFixed(4)
+    const val = +tokenAmount * 0.0001
+    const price = parseFloat(val.toString()).toFixed(4)
     setAmountDue(price)
   }
 
@@ -76,11 +76,11 @@ const BuyModal = ({ close, buyTokens }) => {
           </div>
           <div className={styles.price}>
             Total Due:{' '}
-            {tokenAmount && tokenAmount > 0 ? amountDue + 'ETH' : '0 ETH'}
+            {tokenAmount && +tokenAmount > 0 ? amountDue + 'ETH' : '0 ETH'}
           </div>
           <button
             className={styles.buyBtn}
-            disabled={!tokenAmount || tokenAmount < 0}
+            disabled={!tokenAmount || +tokenAmount < 0}
             onClick={() => {
               setIsLoading(true)
               buyTokens()

@@ -1,9 +1,62 @@
+// @ts-nocheck
 import { createContext, useState, useEffect } from 'react'
 import { useMoralis, useMoralisQuery } from 'react-moralis'
 import { amazonAbi, amazonCoinAddress } from '../lib/constants'
 import { ethers } from 'ethers'
 
-export const AmazonContext = createContext()
+type contextType = {
+  formattedAccount: string
+  isAuthenticated: boolean
+  buyTokens: () => void
+  getBalance: () => void
+  balance: string
+  setTokenAmount: (val: string) => void
+  tokenAmount: string
+  amountDue: string
+  setAmountDue: (val: string) => void
+  isLoading: boolean
+  setIsLoading: (val: boolean) => void
+  setEtherscanLink: (link: string) => void
+  etherscanLink: string
+  buyAsset: (price: number, asset: any) => void
+  currentAccount: string
+  nickname: string
+  setNickname: (val: string) => void
+  username: string
+  setUsername: (val: string) => void
+  handleSetUsername: () => void
+  assets: any[]
+  recentTransactions: any[]
+  ownedItems: any[]
+}
+
+const contextDefaultValues: contextType = {
+  formattedAccount: '',
+  isAuthenticated: false,
+  buyTokens: () => {},
+  getBalance: () => {},
+  balance: '',
+  setTokenAmount: (val: string) => {},
+  tokenAmount: '',
+  amountDue: '',
+  setAmountDue: (val: string) => {},
+  isLoading: false,
+  setIsLoading: (val: boolean) => {},
+  setEtherscanLink: (link: string) => {},
+  etherscanLink: '',
+  buyAsset: (price: number, asset: any) => {},
+  currentAccount: '',
+  nickname: '',
+  setNickname: (val: string) => {},
+  username: '',
+  setUsername: (val: string) => {},
+  handleSetUsername: () => {},
+  assets: [],
+  recentTransactions: [],
+  ownedItems: [],
+}
+
+export const AmazonContext = createContext<contextType>(contextDefaultValues)
 
 export const AmazonProvider = ({ children }) => {
   const [currentAccount, setCurrentAccount] = useState('')
@@ -16,8 +69,8 @@ export const AmazonProvider = ({ children }) => {
   const [nickname, setNickname] = useState('')
   const [username, setUsername] = useState('')
   const [assets, setAssets] = useState<any[]>([])
-  const [recentTransactions, setRecentTransactions] = useState([])
-  const [ownedItems, setOwnedItems] = useState([])
+  const [recentTransactions, setRecentTransactions] = useState<any[]>([])
+  const [ownedItems, setOwnedItems] = useState<any[]>([])
 
   const {
     authenticate,
@@ -142,8 +195,6 @@ export const AmazonProvider = ({ children }) => {
   const buyAsset = async (price, asset) => {
     try {
       if (!isAuthenticated) return
-      console.log(userData)
-
       const options = {
         type: 'erc20',
         amount: price,

@@ -1,3 +1,4 @@
+// @ts-nocheck
 import React, { useContext } from 'react'
 import { CgMenuGridO } from 'react-icons/cg'
 import logo from '../assets/amazon_logo_full.png'

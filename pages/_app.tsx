@@ -2,7 +2,6 @@ import '../styles/globals.css'
 import type { AppProps } from 'next/app'
 import { MoralisProvider } from 'react-moralis'
 import { AmazonProvider } from '../context/AmazonContext'
-import { ModalProvider } from 'react-simple-hook-modal'
 
 function MyApp({ Component, pageProps }: AppProps) {
   return (
@@ -11,9 +10,7 @@ function MyApp({ Component, pageProps }: AppProps) {
       appId={process.env.NEXT_PUBLIC_MORALIS_APP_ID!}
     >
       <AmazonProvider>
-        <ModalProvider>
-          <Component {...pageProps} />
-        </ModalProvider>
+        <Component {...pageProps} />
       </AmazonProvider>
     </MoralisProvider>
   )
